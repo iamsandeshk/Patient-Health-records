@@ -36,10 +36,10 @@ app.post("/send-otp", async (req, res) => {
     const { patientId, phoneNumber } = req.body;
   
     const phoneMapping = {
-        DOC12345: "+919353173113",
-        PAH12345: "+919353006355",
-        PAH12346: "+917483132320",
-        PAH12347: "+919035000678"
+        DOC12345: "+91",
+        PAH12345: "+919",
+        PAH12346: "+9174",
+        PAH12347: "+91903"
     };
   
     const mappedPhoneNumber = phoneMapping[patientId];
@@ -95,4 +95,5 @@ app.post("/send-otp", async (req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
