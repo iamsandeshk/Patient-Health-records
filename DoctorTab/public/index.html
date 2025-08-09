@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>H+ Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="i.css" />
+    <style>
+      :root {
+        --primary-color: #4361ee;
+        --primary-hover: #3b56d9;
+        --border-color: #e2e8f0;
+        --text-color: #334155;
+        --bg-color: #f8fafc;
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      </style>
+       <style>
+        h1 { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        th { background-color: #f0f0f0; }
+    
+    </style>
+  </head>
+  <body>
+    <div class="container">
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <div class="logo">H+</div>
+        <div class="menu">
+          <li class="menu-item" onclick="showSection('dashboard')"><span class="icon">📊</span>Dashboard</li>
+          <li class="menu-item" onclick="showSection('patient-analytics')"><span class="icon">🗃️</span>Patient +</li>
+
+           <li class="menu-item" onclick="showSection('setting-doctor-section')">&nbsp<i class="fa-solid fa-gear"></i></span
+            >&nbsp Settings</li>
+          <li class="menu-item" onclick="showSection('feedbackFormSection')">&nbsp<i class="fa-solid fa-question"></i></span
+            >&nbsp Feedback</li>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <a href="http://localhost:3000" class="log-out"
+          ><i class="fa-solid fa-right-from-bracket"></i
+          ><span class="icon"></span>Logout</a
+        >
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="header">
+        <div class="nav-bar">
+          <div class="welcome">
+            <h1 style="font-family:Source Code Pro;font-weight: bolder;font-size: 40px;">Your Path to The Health</h1>
+          </div>
+
+          <div class="nav-right">
+
+            <a href="#" onclick="showSection('setting-doctor-section')" class="user-profile">
+              <img 
+                src="avatar.jpg"
+                alt="User Avatar"
+                class="user-avatar"
+             style="background-color: #ccc; border: 2px solid #333; border-radius: 50%;" onclick="showSection('setting-doctor-section')" />
+            </a>
+          </div>
+        </div>
+      </div>
+      
+  
+
+<!-- Content Sections -->
+<div class="content">
+  <!-- Dashboard Section -->
+  <section id="dashboard">
+      <div id="patient-search-section" style="display: flex; align-items: center; justify-content: center; text-align: center;">
+        <div id="patient-search-content" style="max-width: 600px;">
+            <h1 id="patient-search-heading" style="font-size: 2em; margin: 20px 0;">Find <span style="color: #4a90e2; font-weight: bold;">Patients</span> by Patient ID</h1>
+            <p id="patient-search-description" style="color: #666; margin-bottom: 20px;">Access patient information quickly and securely.</p>
+            <div class="patient-search-bar" style="display: flex; gap: 10px; justify-content: center;">
+                <input type="text" id="searchInput" class="searchInput" placeholder="Enter Patient ID" style="padding: 12px; width: 300px; font-size: 1em; border: 2px solid #333; border-radius: 5px; outline: none;" onkeyup="searchByPatientId()">
+                <button class="search-button" style="padding: 12px 24px; background: #333; color: #fff; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;" onclick="searchByPatientId()">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <h2>Recent Records :</h2>
+        <div id="patientInfo" class="patient-info"></div>
+    
+        <!-- Patient Table -->
+          <div class="container">
+              <table id="recordsTable">
+                  <thead>
+                      <tr>
+                         <th>Patient ID</th>
+                          <th>Doctor NAME</th>
+                          <th>Condition</th>
+                          <th>Health Problem</th>
+                          <th>Visit Date</th>
+                          <th>Medicines</th>
+                          <th >Additional Documents</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <!-- Rows will be added dynamically here -->
+                  </tbody>
+              </table>
+          </div>
+    </div>
+
+  </section>
+  <!-- Your Patient input content here -->
+  <section id="patient-analytics" style="display: none;">
+    <div id="patient-search-section" style="display: flex; padding: 1em; align-items: center; justify-content: center; text-align: center;">
+        <div id="patient-search-content" style="max-width: 600px;">
+            <h1 id="patient-search-heading" style="font-size: 2em; margin: 20px 0;">Find <span style="color: #4a90e2; font-weight: bold;">Patients</span> by Patient ID</h1>
+            <p id="patient-search-description" style="color: #666; margin-bottom: 20px;">Access patient information quickly and securely.</p>
+            <div class="patient-search-bar" style="display: flex; gap: 10px; justify-content: center;">
+                <input type="text" class="patient-search-input" placeholder="Enter Patient ID" style="padding: 12px; width: 300px; font-size: 1em; border: 2px solid #333; border-radius: 5px; outline: none;" required id="patient-id-input">
+                <button class="search-button" type="button" style="padding: 12px 24px; background: #333; color: #fff; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;" id="search-button" disabled>Verify</button>
+            </div>
+            <div id="otp-section" style="margin-top: 20px; display: none;">
+                <input type="text" id="otp-input" placeholder="Enter OTP" style="padding: 12px; width: 300px; font-size: 1em; border: 2px solid #333; border-radius: 5px; outline: none;">
+                <button id="submit-otp" type="button" style="padding: 12px 24px; background: #4a90e2; color: #fff; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;">Submit</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="patient-addition" style=" display: none; margin-top: 20px;">
+    <h1>Patient Analytics</h1>
+   
+<div class="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column; max-width: 1200px; margin: 0 auto; padding: 20px; background-color: white; border-radius: 20px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+  <h1 style="text-align: center; margin-bottom: 20px;">Add New Record</h1>
+  <form id="surveyForm" action="/submit-form" method="POST" enctype="multipart/form-data">
+      <!-- Basic Details -->
+      <div class="form-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="patientId" style="margin-bottom: 5px;">Patient Id</label>
+              <input type="text" id="patientId" placeholder="Ex: PAH12345" name="patientId" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;" readonly>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="patientName" style="margin-bottom: 5px;">Patient Name</label>
+              <input type="text" id="patientName" name="patientName" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;" readonly>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="doctorId" style="margin-bottom: 5px;">Doctor Name</label>
+              <input type="text" id="doctorId" name="doctorId" required value="Sanjay Das" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;"readonly>
+          </div>
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="visitDate" style="margin-bottom: 5px;">Today's Date</label>
+              <input type="date" id="visitDate" name="visitDate" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+          </div>
+      </div>
+  
+      <div class="form-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="condition" style="margin-bottom: 5px;">Condition</label>
+              <select id="condition" name="condition" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+                  <option value="">Choose an Option</option>
+                  <option value="improving">Improving</option>
+                  <option value="stable">Stable</option>
+                  <option value="managing">Managing</option>
+              </select>
+          </div>
+      </div>
+  
+      <div class="column" style="display: flex; flex-direction: column;">
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="healthProblem" style="margin-bottom: 5px;">Health Problem</label>
+              <input type="text" id="healthProblem" name="healthProblem" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+          </div>
+  
+          <!-- Medicines Question -->
+          <div class="form-group" style="display: flex; flex-direction: column; margin-bottom: 15px;">
+              <label for="medicines" style="margin-bottom: 5px;">Are you taking any medicines?</label>
+              <select id="medicines" onchange="toggleMedicinesBox()" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+                  <option value="Choose from options">No</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+              </select>
+          </div>
+      
+          <!-- Hidden Medicines Input -->
+          <div id="medicines-box" style="display: none;">
+              <label for="medicinesInput" style="margin-bottom: 5px;">Please list the medicines:</label>
+              <textarea id="medicinesInput" name="medicines" rows="4" oninput="autoNumber(this)" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; resize: vertical;"></textarea>
+          </div>
+
+          <!-- File Upload Section -->
+          <div class="upload-form" style="margin-bottom: 20px;">
+              <label for="imageInput" style="margin-bottom: 5px;">Upload the Additional documents if any:</label>
+              <input type="file" id="imageInput" name="image" accept="image/*" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+          </div>
+      </div>
+  
+      <button type="submit" class="submit-btn" style="display: block; width: 50%; padding: 10px; background-color: #28a745; color: white; font-size: 18px; border: none; border-radius: 5px; cursor: pointer;" >Submit</button>
+  </form>
+
+  <h1>Patient Dashboard</h1>
+  
+  <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; margin-bottom: 10px;">
+    <input type="text" id="search-input"   placeholder="Search by Date, Health Problem, or Condition"  style="padding: 12px; width: 300px; font-size: 1em; border: 2px solid #333; border-radius: 5px; outline: none;">
+    <button id="search-button" style="padding: 12px 24px; background: #333; color: #fff; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;">Search</button>
+</div>
+
+  <!-- Display Records -->
+  <table id="patientTable">
+      <thead>
+          <tr>
+            <th>Doctor NAME</th>
+            <th>Condition</th>
+            <th>Health Problem</th>
+            <th>Visit Date</th>
+            <th>Medicines</th>
+            <th >Additional Documents</th>
+          </tr>
+      </thead>
+      <tbody id="recordsBody">
+          <!-- Data will be inserted here -->
+      </tbody>
+  </table>
+
+  <script>
+    let records = []; // To store fetched records
+  
+    // Fetch data from the backend
+    async function fetchRecords() {
+        const response = await fetch('/fetch-records');
+        const data = await response.json();
+        records = data;
+        displayRecords(records); // Display the fetched records
+    }
+  
+    // Function to display records in the table
+    function displayRecords(data) {
+        const tableBody = document.getElementById('recordsBody');
+        tableBody.innerHTML = ''; // Clear existing data
+  
+        data.forEach(record => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>Dr. ${record.doctorId || ""}</td>
+                <td>${record.condition || ""}</td>
+                <td>${record.healthProblem || ""}</td>
+                <td>${record.visitDate || ""}</td>
+                <td>${record.medicines || ""}</td>
+                <td style="background-color: #2a2a2a; color: white; margin:5px; cursor:pointer;">
+                  <span class="btn-view" onclick="viewDocument('${record._id}')">View Document</span>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+  
+    function viewDocument(recordId) {
+      // Fetch the image data (assuming the image is stored as binary data in MongoDB)
+      fetch(`/fetch-record/${recordId}`)
+        .then(response => response.blob())
+        .then(imageBlob => {
+          const imageUrl = URL.createObjectURL(imageBlob);
+          const imageWindow = window.open();
+          imageWindow.document.write(`<img src="${imageUrl}" alt="Document Image" style="max-width: 100%; margin:50px; margin-left:25em; max-height: 80vh;">`);
+        })
+        .catch(error => {
+          console.error("Error fetching document:", error);
+          alert("Error fetching document. Please try again later.");
+        });
+    }
+  
+    // Call fetchRecords when the page loads
+    window.onload = fetchRecords;
+  </script>
+
+<!--Display Toggle for medicins-->
+<script >
+  function toggleAllergiesBox() {
+        const allergiesBox = document.getElementById('allergies-box');
+        allergiesBox.style.display = document.getElementById('allergies').value === 'yes' ? 'block' : 'none';
+    }
+
+    function toggleMedicinesBox() {
+        const medicinesBox = document.getElementById('medicines-box');
+        medicinesBox.style.display = document.getElementById('medicines').value === 'yes' ? 'block' : 'none';
+    }
+</script>
+
+  
+  
+</div>  
+</section>
+
+ <!--Setting Page-->
+ <section id="setting-doctor-section" style="display: none; max-width: 800px; margin: 2rem auto; background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <div class="profile-header" style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+    <div class="profile-photo" style="position: relative; width: 120px; height: 120px;">
+      <!-- Image element to display the profile photo with default image -->
+      <img id="profile-img" src="avatar.jpg" alt="Profile Photo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #4361ee;">
+      
+      <!-- Hidden file input field for selecting image -->
+      <input type="file" id="photo-upload-input" style="display: none;" accept="image/*" onchange="previewImage(event)">
+      
+      <!-- Button to trigger file input -->
+      <button onclick="document.getElementById('photo-upload-input').click();" 
+              style="position: absolute; bottom: 0; right: 0; background: #4361ee; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer;">
+          📷
+      </button>
+  </div>
+  
+  <script>
+    // Function to handle image file selection and preview
+    function previewImage(event) {
+      const file = event.target.files[0];  // Get the selected file
+      if (file) {
+        const reader = new FileReader();
+        
+        // When the file is read, update the image source
+        reader.onload = function(e) {
+          document.getElementById('profile-img').src = e.target.result;  // Set image source to the selected file
+        };
+        
+        // Read the file as a data URL (for previewing)
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+  
+    <div>
+      <h2 style="margin: 0; color: #333;">Dr. Sanjay Das</h2>
+      <p style="color: #666; margin: 0;">Doctor Profile Settings</p>
+    </div>
+  </div>
+
+  <h3 style="color: #333; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #4361ee;">Profile Information</h3>
+
+  <div class="setting-group" style="margin-bottom: 1.5rem; position: relative;">
+    <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #333;">User ID</label>
+    <input type="text" value="DOC12345" readonly style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; width: 100%; background-color: #f8f9fa; color: #333;">
+  </div>
+
+  <div class="setting-group" style="margin-bottom: 1.5rem; position: relative;">
+    <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #333;">Date of Birth</label>
+    <input type="text" value="01/01/1990" readonly style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; width: 100%; background-color: #f8f9fa; color: #333;">
+  </div>
+
+  <div class="setting-group" style="margin-bottom: 1.5rem; position: relative;">
+    <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #333;">Address</label>
+    <input type="text" value="123 Kanakapura Road, Bengaluru, Karnataka, India" id="address" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; width: 100%; background-color: #f8f9fa; color: #333;">
+  </div>
+
+  <div class="setting-group" style="margin-bottom: 1.5rem; position: relative;">
+    <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #333;">Contact Number</label>
+    <input type="tel" value="+919353173113" disabled style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; width: 100%; background-color: #f8f9fa; color: #333;">
+    <button onclick="toggleEdit(this)" style="position: absolute; right: 0; top: 0; background: #4361ee; color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; cursor: pointer;">Edit</button>
+  </div>
+
+  <div class="setting-group" style="margin-bottom: 1.5rem; position: relative;">
+    <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: #333;">Email</label>
+    <input type="email" value="sandeshk4@mail.com" disabled style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; width: 100%; background-color: #f8f9fa; color: #333;">
+    <button onclick="toggleEdit(this)" style="position: absolute; right: 0; top: 0; background: #4361ee; color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; cursor: pointer;">Edit</button>
+  </div>
+
+
+<h3 style="color: #333; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #4361ee;">Security Settings</h3>
+
+<div style="margin-top: 2rem;">
+  <h3 style="color: #ef233c;">Danger Zone</h3>
+  <p style="color: #666;">Once deleted, your account cannot be recovered</p>
+  <button onclick="showNotification('Account deletion initiated')" style="padding: 0.75rem 1.5rem; border: none; border-radius: 8px; background: #ef233c; color: white; cursor: pointer;">Delete Account</button>
+</div>
+
+<div id="notification" style="position: fixed; top: 20px; right: 20px; padding: 1rem; background: #2ecc71; color: white; border-radius: 8px; display: none;"></div>
+
+</section>
+
+<script>
+  function toggleEdit(button) {
+    const input = button.parentElement.querySelector('input');
+    const isEditable = input.disabled;
+    input.disabled = !isEditable;
+    button.textContent = isEditable ? 'Save' : 'Edit';
+    
+    if (!isEditable) {
+      showNotification('Changes saved successfully!');
+    }
+  }
+  
+  function showNotification(message) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+    
+    setTimeout(() => {
+      notification.style.display = 'none';
+    }, 3000);
+  }
+  </script>
+
+<!--Feedback form-->
+<section id="feedbackFormSection" style="max-width: 600px; display: none; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+  <h1 style="text-align: center; color: #333;">Website Feedback Form</h1>
+
+  <form id="feedbackForm">
+
+      <!-- Role Selection -->
+      <label for="userRole" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">I am a:</label>
+      <select id="userRole" name="role" required onchange="displayRoleSpecificQuestions()" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+          <option value="">Select</option>
+          <option value="patient">Patient</option>
+          <option value="doctor">Doctor</option>
+      </select>
+
+      <!-- Hospital Name (Only for Doctors) -->
+      <div id="doctorHospitalField" class="hiddenElement" style="display: none;">
+          <label for="hospitalName" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">Hospital Name (for Doctors):</label>
+          <input type="text" id="hospitalName" name="hospital" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <!-- Website Navigation Rating -->
+      <label for="siteNavigationRating" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">1. How easy is it to navigate the website? (Rate 1 to 5)</label>
+      <input type="number" id="siteNavigationRating" name="navigation" min="1" max="5" placeholder="Enter rating (1-5)" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+
+      <!-- Website Usage Experience Rating -->
+      <label for="usageExperienceRating" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">2. How would you rate the website upon usage experience? (Rate 1 to 5)</label>
+      <input type="number" id="usageExperienceRating" name="experience" min="1" max="5" placeholder="Enter rating (1-5)" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+
+      <!-- Issue Encountered -->
+      <label style="display: block; margin-top: 10px; font-weight: bold; color: #333;">3. Were there any issues you encountered while using the site?</label>
+      <div style="display: block; margin-top: 5px; margin-bottom: 15px;">
+          <label style="display: flex; align-items: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff;">
+              <input type="radio" name="issue" value="yes" onclick="toggleIssueDescription('yes')" style="margin-right: 10px;"> Yes
+          </label>
+          <label style="display: flex; align-items: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; margin-top: 5px;">
+              <input type="radio" name="issue" value="no" onclick="toggleIssueDescription('no')" style="margin-right: 10px;"> No
+          </label>
+      </div>
+
+      <!-- Textarea for Yes -->
+      <textarea id="issueDescriptionYes" name="issueDetailsYes" class="hiddenElement" placeholder="Please describe the issue..." style="display: none; width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+      
+      <!-- Textarea for No -->
+      <textarea id="issueDescriptionNo" name="issueDetailsNo" class="hiddenElement" placeholder="What worked well for you?" style="display: none; width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+      <!-- Patient-Specific Question -->
+      <div id="patientSpecificQuestion" class="hiddenElement" style="display: none;">
+          <label for="doctorCommunicationRating" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">4. How would you rate the communication with doctors? (Rate 1 to 5)</label>
+          <input type="number" id="doctorCommunicationRating" name="communication" min="1" max="5" placeholder="Enter rating (1-5)" style="width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <!-- Doctor-Specific Question -->
+      <div id="doctorSpecificQuestion" class="hiddenElement" style="display: none;">
+          <label style="display: block; margin-top: 10px; font-weight: bold; color: #333;">5. Is it helpful to view and access patient records from our website?</label>
+          <div style="display: block; margin-top: 5px;">
+              <label style="display: flex; align-items: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff;">
+                  <input type="radio" name="recordsAccess" value="yes" style="margin-right: 10px;"> Yes
+              </label>
+              <label style="display: flex; align-items: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; margin-top: 5px;">
+                  <input type="radio" name="recordsAccess" value="no" style="margin-right: 10px;"> No
+              </label>
+          </div>
+      </div>
+
+      <!-- Additional Comments -->
+      <label for="additionalFeedback" style="display: block; margin-top: 10px; font-weight: bold; color: #333;">Additional Comments:</label>
+      <textarea id="additionalFeedback" name="comments" placeholder="Share any other feedback or suggestions..." style="width: 100%; padding: 10px; height: 100px; margin-top: 5px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+      <!-- Submit Button -->
+      <button type="submit" style="background-color: #333; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit Feedback</button>
+  </form>
+</section>
+<script>
+  function displayRoleSpecificQuestions() {
+      const role = document.getElementById('userRole').value;
+      document.getElementById('patientSpecificQuestion').style.display = (role === 'patient') ? 'block' : 'none';
+      document.getElementById('doctorSpecificQuestion').style.display = (role === 'doctor') ? 'block' : 'none';
+      document.getElementById('doctorHospitalField').style.display = (role === 'doctor') ? 'block' : 'none';
+  }
+
+  function toggleIssueDescription(choice) {
+      document.getElementById('issueDescriptionYes').style.display = (choice === 'yes') ? 'block' : 'none';
+      document.getElementById('issueDescriptionNo').style.display = (choice === 'no') ? 'block' : 'none';
+  }
+</script>
+
+<!--Patient related-->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const patientIdInput = document.getElementById("patient-id-input");
+  const searchButton = document.getElementById("search-button");
+  const otpSection = document.getElementById("otp-section");
+  const otpInput = document.getElementById("otp-input");
+  const submitOtpButton = document.getElementById("submit-otp");
+  const recordsBody = document.getElementById("recordsBody");
+  const patientAddition = document.getElementById('patient-addition');
+
+  let verifiedPatientId = null; // Store verified Patient ID
+  let records = []; // Global variable to store all fetched records for searching
+
+  // Map patient IDs to phone numbers
+  const patientMapping = {
+    PAH12345: { phone: "+919353006355", name: "Manav" },
+    PAH12346: { phone: "+917483132320", name: "Kruthi" },
+    PAH12347: { phone: "+919035000678", name: "Vikas" },
+  };
+
+  // Enable or disable the search button based on input
+  patientIdInput.addEventListener("input", () => {
+    searchButton.disabled = !patientIdInput.value.trim();
+  });
+
+  // Handle the search button click
+  searchButton.addEventListener("click", async () => {
+    const patientId = patientIdInput.value.trim();
+
+    if (patientMapping[patientId]) {
+      try {
+        // Send OTP request to the backend
+        const response = await fetch("/send-otp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ patientId }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert("OTP sent successfully!");
+          otpSection.style.display = "block"; // Show OTP input section
+        } else {
+          alert(data.message || "Failed to send OTP.");
+        }
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        alert("An error occurred while sending the OTP. Please try again.");
+      }
+    } else {
+      alert("Invalid Patient ID.");
+    }
+  });
+
+  // Handle OTP submission
+  submitOtpButton.addEventListener("click", async () => {
+    const patientId = patientIdInput.value.trim();
+    const otp = otpInput.value.trim();
+
+    if (otp) {
+      try {
+        // Verify OTP with the backend
+        const response = await fetch("/verify-otp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ patientId, otp }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert("OTP verified successfully!");
+          verifiedPatientId = patientId; // Save the verified Patient ID
+          otpSection.style.display = "none";
+          patientAddition.style.display = "block";
+
+          document.getElementById("patientId").value = verifiedPatientId;
+          document.getElementById("patientName").value =
+            patientMapping[verifiedPatientId]?.name || "Unknown";
+
+          fetchRecords(); // Fetch records after successful OTP verification
+        } else {
+          alert(data.message || "Invalid or expired OTP.");
+        }
+      } catch (error) {
+        console.error("Error verifying OTP:", error);
+        alert("An error occurred during OTP verification. Please try again.");
+      }
+    } else {
+      alert("Please enter the OTP.");
+    }
+  });
+
+ // Fetch records from the backend
+async function fetchRecords() {
+  try {
+    const response = await fetch("/fetch-records"); // Fetch all records
+    const data = await response.json();
+    const filteredRecords = data.filter(
+      (record) => record.patientId === verifiedPatientId
+    ); // Filter records by verified Patient ID
+    records = filteredRecords; // Save all records for the patient
+    displayRecords(filteredRecords); // Display all records
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    alert("An error occurred while fetching records. Please try again.");
+  }
+}
+
+
+  // Display records in the table
+  function displayRecords(data) {
+    recordsBody.innerHTML = ""; // Clear existing data
+
+    if (data.length === 0) {
+      const noRecordsRow = document.createElement("tr");
+      noRecordsRow.innerHTML = `<td colspan="6" style="text-align: center;">No records found for this Patient ID</td>`;
+      recordsBody.appendChild(noRecordsRow);
+      return;
+    }
+
+    data.forEach((record) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>Dr. ${record.doctorId || ""}</td>
+        <td>${record.condition || ""}</td>
+        <td>${record.healthProblem || ""}</td>
+        <td>${record.visitDate || ""}</td>
+        <td>${record.medicines || ""}</td>
+        <td style="background-color: #2a2a2a; color: white; margin:5px; cursor:pointer;">
+          <span class="btn-view" onclick="viewDocument('${record._id}')">View Document</span>
+        </td>
+      `;
+      recordsBody.appendChild(row);
+    });
+  }
+
+  // View a document by fetching it from the backend
+  function viewDocument(recordId) {
+    fetch(`/fetch-record/${recordId}`)
+      .then((response) => response.blob())
+      .then((imageBlob) => {
+        const imageUrl = URL.createObjectURL(imageBlob);
+        const imageWindow = window.open();
+        imageWindow.document.write(
+          `<img src="${imageUrl}" alt="Document Image" style="max-width: 100%; margin:50px; margin-left:25em; max-height: 80vh;">`
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching document:", error);
+        alert("Error fetching document. Please try again later.");
+      });
+  }
+
+  // Universal Search Function
+  function universalSearch() {
+    const searchInput = document.getElementById("search-input").value.toLowerCase().trim();
+
+    
+    if (!searchInput) {
+    displayRecords(records); // If no search input, show all records
+    return;
+  }
+
+    try {
+      // Filter records by search query across multiple fields
+      const filteredRecords = records.filter((record) => {
+        return (
+          record.healthProblem.toLowerCase().includes(searchInput) || // Search by health problem
+          record.visitDate.includes(searchInput) || // Search by visit date
+          record.condition.toLowerCase().includes(searchInput) // Search by condition
+        );
+      });
+
+      displayRecords(filteredRecords); // Display the filtered records
+    } catch (error) {
+      console.error("Error during search:", error);
+      alert("An error occurred while searching. Please try again.");
+    }
+  }
+
+  // Attach the universal search to the search button
+  document.getElementById("search-button").addEventListener("click", universalSearch);
+
+  // Optionally, enable live search
+  document.getElementById("search-input").addEventListener("input", universalSearch);
+
+});
+
+</script>
+
+</div>
+</div>
+</div>
+
+<!--Show Sections -->
+<script>
+
+  function showSection(sectionId) {
+  // Hide all sections
+  const sections = document.querySelectorAll('section');
+  sections.forEach(section => {
+    section.style.display = 'none';
+  });
+
+  // Remove active class from all menu items
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach(item => {
+    item.classList.remove('active');
+  });
+
+  // Show the selected section
+  const selectedSection = document.getElementById(sectionId);
+  if (selectedSection) {
+    selectedSection.style.display = 'block';
+  }
+
+  // Highlight the active menu item
+  const activeMenuItem = document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`);
+  if (activeMenuItem) {
+    activeMenuItem.classList.add('active');
+  }
+}
+</script>
+
+
+<!--Patient information -->
+  <script>
+  // Fetch the patient record from the backend
+  fetch('/fetch-records')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Error fetching records.");
+      }
+      return response.json();
+    })
+    .then(data => {
+      const tableBody = document.getElementById("recordsTable").querySelector("tbody");
+
+      // If data is a single object, treat it as an array
+      const records = Array.isArray(data) ? data : [data];
+
+      // Store the fetched records globally for later use
+      window.allRecords = records;
+
+      // Function to display records in the table
+      function displayRecords(recordsToDisplay) {
+        tableBody.innerHTML = ""; // Clear existing records
+
+        if (recordsToDisplay.length === 0) {
+          const noRecordsRow = document.createElement("tr");
+          noRecordsRow.innerHTML = `<td colspan="7" style="text-align: center;">No records found</td>`;
+          tableBody.appendChild(noRecordsRow);
+          return;
+        }
+
+        // Loop through the records and append them to the table
+        recordsToDisplay.forEach(record => {
+          const medicines = record.medicines ? record.medicines : "None";
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${record.patientId || ""}</td>
+            <td>Dr. ${record.doctorId || ""}</td>
+            <td>${record.condition || ""}</td>
+            <td>${record.healthProblem || ""}</td>
+            <td>${record.visitDate || ""}</td>
+            <td class="medicines-column">${medicines}</td>
+            <td style="background-color: #2a2a2a; color: white; margin:5px; cursor:pointer;">
+              <span class="btn-view" onclick="viewDocument('${record._id}')">View Document</span>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Display all records initially
+      displayRecords(records);
+
+      // Search function to filter records by Patient ID
+      function searchByPatientId() {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        
+        // If the search input is empty, display all records
+        if (searchInput === "") {
+          displayRecords(window.allRecords);
+        } else {
+          // Filter the records by Patient ID
+          const filteredRecords = window.allRecords.filter(record => 
+            record.patientId.toLowerCase().includes(searchInput)
+          );
+          
+          // Display the filtered records
+          displayRecords(filteredRecords);
+        }
+      }
+
+      // Event listener for keyup on the search input
+      document.getElementById("searchInput").addEventListener("keyup", searchByPatientId);
+
+    })
+    .catch(error => {
+      console.error("Error fetching records:", error);
+      alert("Error fetching records. Please try again later.");
+    });
+
+  // Function to view document (image) when clicked
+  function viewDocument(recordId) {
+    // Fetch the image data (assuming the image is stored as binary data in MongoDB)
+    fetch(`/fetch-record/${recordId}`)
+      .then(response => response.blob())
+      .then(imageBlob => {
+        const imageUrl = URL.createObjectURL(imageBlob);
+        const imageWindow = window.open();
+        imageWindow.document.write(`<img src="${imageUrl}" alt="Document Image" style="max-width: 100%; margin:50px; margin-left:25em; max-height: 80vh;">`);
+      })
+      .catch(error => {
+        console.error("Error fetching document:", error);
+        alert("Error fetching document. Please try again later.");
+      });
+  }
+</script>
+
+
+<!--Image view-->
+<script>
+function viewDocument(recordId) {
+  // Fetch the image data (assuming the image is stored as binary data in MongoDB)
+  fetch(`/fetch-record/${recordId}`)
+    .then(response => response.blob())
+    .then(imageBlob => {
+      const imageUrl = URL.createObjectURL(imageBlob);
+
+      // Create the overlay div
+      const overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100%";
+      overlay.style.height = "100%";
+      overlay.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+      overlay.style.display = "flex";
+      overlay.style.justifyContent = "center";
+      overlay.style.alignItems = "center";
+      overlay.style.zIndex = "9999"; // Make sure it is on top of other content
+
+      // Create the image container that will allow scrolling
+      const imageContainer = document.createElement("div");
+      imageContainer.style.overflow = "auto"; // Allow scrolling
+      imageContainer.style.maxWidth = "100%"; // Max width of container
+      imageContainer.style.maxHeight = "100vh"; // Max height of container
+      imageContainer.style.position = "relative"; // Allow scrolling
+      imageContainer.style.cursor = "move"; // Show move cursor for scroll
+
+      // Create the image element
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.style.width = "100%"; // Initial image width
+      img.style.height = "auto"; // Keep image aspect ratio
+      img.style.objectFit = "contain"; // Ensure the image fits in the container
+      img.style.transition = "transform 0.2s"; // Smooth transition for zooming
+
+      let scale = 1;
+
+      // Create zoom buttons for zooming in (+) and zooming out (-)
+      const zoomInButton = document.createElement("button");
+      zoomInButton.textContent = "+";
+      zoomInButton.style.position = "absolute";
+      zoomInButton.style.top = "20px";
+      zoomInButton.style.left = "20px";
+      zoomInButton.style.padding = "10px";
+      zoomInButton.style.backgroundColor = "#fff";
+      zoomInButton.style.border = "none";
+      zoomInButton.style.cursor = "pointer";
+      zoomInButton.style.fontSize = "20px";
+      zoomInButton.style.zIndex = "10000"; // Ensure it is above the image
+
+      const zoomOutButton = document.createElement("button");
+      zoomOutButton.textContent = "-";
+      zoomOutButton.style.position = "absolute";
+      zoomOutButton.style.top = "20px";
+      zoomOutButton.style.left = "60px";
+      zoomOutButton.style.padding = "10px";
+      zoomOutButton.style.backgroundColor = "#fff";
+      zoomOutButton.style.border = "none";
+      zoomOutButton.style.cursor = "pointer";
+      zoomOutButton.style.fontSize = "20px";
+      zoomOutButton.style.zIndex = "10000"; // Ensure it is above the image
+
+      // Zoom in functionality
+      zoomInButton.addEventListener("click", function() {
+        scale *= 1.1; // Zoom in by 10%
+        img.style.transform = `scale(${scale})`; // Apply zoom
+      });
+
+      // Zoom out functionality
+      zoomOutButton.addEventListener("click", function() {
+        scale *= 0.9; // Zoom out by 10%
+        img.style.transform = `scale(${scale})`; // Apply zoom
+      });
+
+      // Create a close button
+      const closeButton = document.createElement("button");
+      closeButton.textContent = "X";
+      closeButton.style.position = "absolute";
+      closeButton.style.top = "10px";
+      closeButton.style.right = "10px";
+      closeButton.style.backgroundColor = "#ff0000";
+      closeButton.style.color = "#fff";
+      closeButton.style.border = "none";
+      closeButton.style.borderRadius = "50%";
+      closeButton.style.padding = "10px";
+      closeButton.style.cursor = "pointer";
+      closeButton.style.zIndex = "10000"; // Ensure it is on top of the image
+
+      // Close button functionality
+      closeButton.onclick = function() {
+        document.body.removeChild(overlay);
+      };
+
+      // Append the image to the container
+      imageContainer.appendChild(img);
+
+      // Append the container, zoom buttons, and close button to the overlay
+      overlay.appendChild(imageContainer);
+      overlay.appendChild(zoomInButton);
+      overlay.appendChild(zoomOutButton);
+      overlay.appendChild(closeButton);
+
+      // Append the overlay to the body
+      document.body.appendChild(overlay);
+    })
+    .catch(error => {
+      console.error("Error fetching document:", error);
+      alert("Error fetching document. Please try again later.");
+    });
+}
+</script>
+
+  </body>
+</html>

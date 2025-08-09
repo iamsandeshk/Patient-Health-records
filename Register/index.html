@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Registration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">Healthcare Registration</h1>
+
+        <!-- Role Selection -->
+        <div id="roleSelection" class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Select Your Role</h2>
+            <div class="flex justify-center gap-4">
+                <button onclick="showForm('patient')" class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Patient</button>
+                <button onclick="showForm('doctor')" class="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition">Doctor</button>
+            </div>
+        </div>
+
+        <!-- Patient Registration Form -->
+        <form id="patientForm" class="hidden" onsubmit="handleSubmit(event, 'patient')">
+            <h2 class="text-2xl font-semibold mb-6 text-blue-600">Patient Registration</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2">Full Name</label>
+                    <input type="text" name="fullName" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Date of Birth</label>
+                    <input type="date" name="dob" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Gender</label>
+                    <select name="gender" required class="w-full p-2 border rounded">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">Age</label>
+                    <input type="number" name="age" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Height (cm)</label>
+                    <input type="number" name="height" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Weight (kg)</label>
+                    <input type="number" name="weight" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Blood Group</label>
+                    <select name="bloodGroup" required class="w-full p-2 border rounded">
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">Mobile Number</label>
+                    <input type="tel" name="mobile" required class="w-full p-2 border rounded">
+                </div>
+                <div class="col-span-2">
+                    <label class="block mb-2">Address</label>
+                    <textarea name="address" required class="w-full p-2 border rounded"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="mt-6 px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Register as Patient</button>
+        </form>
+
+        <!-- Doctor Registration Form -->
+        <form id="doctorForm" class="hidden" onsubmit="handleSubmit(event, 'doctor')">
+            <h2 class="text-2xl font-semibold mb-6 text-green-600">Doctor Registration</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2">Full Name</label>
+                    <input type="text" name="fullName" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Date of Birth</label>
+                    <input type="date" name="dob" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Gender</label>
+                    <select name="gender" required class="w-full p-2 border rounded">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">Age</label>
+                    <input type="number" name="age" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Height (cm)</label>
+                    <input type="number" name="height" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Weight (kg)</label>
+                    <input type="number" name="weight" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Blood Group</label>
+                    <select name="bloodGroup" required class="w-full p-2 border rounded">
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2">Mobile Number</label>
+                    <input type="tel" name="mobile" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">Specialty</label>
+                    <input type="text" name="specialty" required class="w-full p-2 border rounded">
+                </div>
+                <div>
+                    <label class="block mb-2">License Document</label>
+                    <input type="file" name="licenseDoc" accept="image* ,.pdf,.jpg,.jpeg,.png" required class="w-full p-2 border rounded">
+                </div>
+                <div class="col-span-2">
+                    <label class="block mb-2">Address</label>
+                    <textarea name="address" required class="w-full p-2 border rounded"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="mt-6 px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition">Register as Doctor</button>
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden mt-6 p-4 bg-green-100 text-green-700 rounded">
+            <h3 class="font-bold mb-2">Registration Successful!</h3>
+            <p>Your Registration ID: <span id="registrationId" class="font-mono font-bold"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function showForm(role) {
+            document.getElementById('patientForm').classList.add('hidden');
+            document.getElementById('doctorForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById(role + 'Form').classList.remove('hidden');
+        }
+
+        function generateRegistrationId(role) {
+            const prefix = role === 'patient' ? 'PAH' : 'DOC';
+            if (role === 'patient') {
+                const ids = ['PAH12345', 'PAH12346', 'PAH12347'];
+                return ids[Math.floor(Math.random() * ids.length)];
+            }
+            return 'DOC12345';
+        }
+
+        async function handleSubmit(event, role) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const registrationId = generateRegistrationId(role);
+            
+            const data = {
+                role: role,
+                registrationId: registrationId,
+            };
+
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    document.getElementById(role + 'Form').classList.add('hidden');
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    document.getElementById('registrationId').textContent = registrationId;
+                } else {
+                    alert('Registration failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
