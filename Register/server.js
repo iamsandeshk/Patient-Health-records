@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
-mongoose.connect('mongodb+srv://myprojecthplus:q6iDk2bDU7VEP9VX@projecth.17yi0.mongodb.net/?retryWrites=true&w=majority&appName=ProjectH', {
+mongoose.connect('mongodb+srv://@projecth.17yi0.mongodb.net/?retryWrites=true&w=majority&appName=ProjectH', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -104,4 +104,5 @@ app.get('/public', (req, res) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+
 });
