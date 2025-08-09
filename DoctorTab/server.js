@@ -6,9 +6,9 @@ const cors = require('cors');
 const twilio = require('twilio');
 
 
-const accountSid = "AC6fce5b7924a4478a6e7621be6d9cd032";
-const authToken = "4fbf8fca5928317058fd12f192673d94";
-const twilioPhoneNumber = "+12406695824";
+const accountSid = "";
+const authToken = "";
+const twilioPhoneNumber = "";
 
 const client = twilio(accountSid, authToken); // Initialize Twilio client
 
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   });
 
 // MongoDB connection URL
-const mongoURI = 'mongodb+srv://myprojecthplus:q6iDk2bDU7VEP9VX@projecth.17yi0.mongodb.net/?retryWrites=true&w=majority&appName=ProjectH';
+const mongoURI = '';
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
@@ -147,9 +147,9 @@ app.post("/send-otp", async (req, res) => {
   const { patientId } = req.body;
 
   const phoneMapping = {
-      PAH12345: "+919353006355",
-      PAH12346: "+919035000678",
-      PAH12347: "+917483132320"
+      PAH12345: "+9193",
+      PAH12346: "+91903",
+      PAH12347: "+91"
   };
 
   const phoneNumber = phoneMapping[patientId];
@@ -197,3 +197,4 @@ app.post("/verify-otp", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
