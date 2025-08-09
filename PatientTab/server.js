@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); // Place your Patient.html and other frontend files inside 'public' folder
 
 // Connect to MongoDB (replace with your MongoDB URI)
-mongoose.connect('mongodb+srv://myprojecthplus:q6iDk2bDU7VEP9VX@projecth.17yi0.mongodb.net/test?retryWrites=true&w=majority&appName=ProjectH')
+mongoose.connect('mongodb+srv://@projecth.17yi0.mongodb.net/test?retryWrites=true&w=majority&appName=ProjectH')
   .then(() => {
     console.log("MongoDB connected");
   })
@@ -78,4 +78,5 @@ app.get('/fetch-record/:id', async (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+
 });
